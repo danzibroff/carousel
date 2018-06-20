@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous">
+    </script>
+
+    <title>Testeroni</title>
+</head>
+
+<body>      
+    <div id="slider">
+        <div id="slider-text">This is slider text</div>
+        <a class="ctrl-btn btn-left">&#10094;</a>  
+        <a class="ctrl-btn btn-right">&#10095;</a>    
+        <div id="img-wrapper">
+            <img src="1.jpeg" class="slider-img">
+            <img src="2.jpeg" class="slider-img">
+            <img src="3.jpeg" class="slider-img">
+            <img src="4.jpeg" class="slider-img">
+        </div>
+    </div>
+    
+    <script>
+        'use strict'    
+        let margin = 0;
+        let options =  {
+            width: 467,
+            height: 350,
+            temp: 200,
+            delay: 500,
+            margin_top: 100,
+            button_height: 48,
+            button_width: 17,
+        };
+
+        const setConfig = (option) => {              
+        options = Object.assign(options, option);
+
+        let slideWidth = options.width;
+        let blockWidth = slideWidth * $('#img-wrapper img').length;
+        let blockHeight = options.height;
+        let sliderMarginTop = options.margin_top;      
+        let bodyWidth =  parseInt( $('body').css('width') );
+        // set css
+        $('#slider').css({'width': `${slideWidth}px`, 'height': `${blockHeight}px`, 'margin-top': `${sliderMarginTop}px`});
+        
+        $('#img-wrapper').css({'width': `${blockWidth}px`, 'height': `${blockHeight}px`});
+        
+        $('#slider #slider-text').css({'width': `${slideWidth}px`})
+                                .css({'height': `${blockHeight / 3}px`})
+                                .css({'top': `${blockHeight - blockHeight / 3 + sliderMarginTop}px`});
+
+        $('#slider a.ctrl-btn').css({'top': `${(blockHeight - options.button_height) / 2 + sliderMarginTop}px`});
+
+        $('#slider a.ctrl-btn.btn-right').css({'left': `${(bodyWidth - slideWidth) / 2 + slideWidth - options.button_width / 2}px`});
+        // onclick functions
+        $('.btn-left').click(function() {
+            margin -= slideWidth;
+            $('#img-wrapper').animate({'margin-left': `-${margin}px`}, options.temp);
+            checkButtons();
+        });
+
+        $('.btn-right').click(function() {
+            margin += slideWidth;
+            $('#img-wrapper').animate({'margin-left': `-${margin}px`}, options.temp);   
+            checkButtons();           
+            });
+        };
+        // hide/show slider buttons function
+        const checkButtons = () => {
+            let slideWidth = options.width;
+            let blockWidth = slideWidth * $('#img-wrapper img').length;
+
+            (margin === 0) ? $('.btn-left').hide() : $('.btn-left').show();
+            
+            (margin === blockWidth - slideWidth) ? $('.btn-right').hide() : $('.btn-right').show();
+        };
+
+        $(document).ready(function() {
+            setConfig();
+            checkButtons();
+            });
+    </script>
+
+
+
+</body>
